@@ -31,3 +31,6 @@ venv/
 # Arquivos temporarios
 *.tmp
 *.swp
+
+# Backups gerados durante edicao
+*.bak.*
