@@ -1,0 +1,33 @@
+# Secrets e variaveis locais
+secrets/
+*.env
+.env
+.env.*
+
+# Logs
+logs/
+*.log
+
+# Backups e dumps
+backups/
+*.dump
+*.backup
+*.bak
+*.tar
+*.tar.gz
+*.zip
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Sistema/editor
+.DS_Store
+.vscode/
+.idea/
+
+# Arquivos temporarios
+*.tmp
+*.swp

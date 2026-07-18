@@ -1,0 +1,50 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: openops_postgres
+    restart: unless-stopped
+    env_file:
+      - /opt/openops/secrets/postgres_container.env
+    ports:
+      - "5432:5432"
+    volumes:
+      - openops_postgres_data:/var/lib/postgresql/data
+    networks:
+      - openops-net
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U openops -d openops"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  minio:
+    image: minio/minio:latest
+    container_name: minio_datalake
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    env_file:
+      - /opt/openops/secrets/minio_container.env
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    networks:
+      - openops-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/ready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+networks:
+  openops-net:
+    external: true
+
+volumes:
+  openops_postgres_data:
+    external: true
+    name: openops_postgres_data
+  minio_data:
+    external: true
+    name: minio-datalake_minio_data
