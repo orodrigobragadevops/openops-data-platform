@@ -37,6 +37,22 @@ services:
       timeout: 5s
       retries: 5
 
+  prefect-server:
+     image: prefecthq/prefect:3-latest
+     container_name: openops_prefect_server
+     restart: unless-stopped
+     command: prefect server start --host 0.0.0.0
+     environment:
+      PREFECT_SERVER_API_HOST: 0.0.0.0
+      PREFECT_UI_URL: http://100.108.156.44:4200
+      PREFECT_API_URL: http://100.108.156.44:4200/api
+     ports:
+       - "4200:4200"
+     volumes:
+       - prefect_data:/root/.prefect
+     networks:
+       - openops-net
+
 networks:
   openops-net:
     external: true
@@ -48,3 +64,5 @@ volumes:
   minio_data:
     external: true
     name: minio-datalake_minio_data
+  prefect_data:
+    name: openops_prefect_data
